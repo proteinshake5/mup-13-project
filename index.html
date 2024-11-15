@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Complaint Portal</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+  <body class="bg-gray-200">
+    <nav class="p-4 text-white bg-green-600">
+      <div class="container flex items-center justify-between mx-auto">
+        <div class="flex items-center justify-center h-16 overflow-hidden w-30">
+          <img
+            src="media/Mnit_logo.png"
+            alt="Logo"
+            class="object-contain w-full h-full"
+          />
+          <h1 class="text-2xl font-bold text-center hover:text-green-200">
+            Complaint Portal
+          </h1>
+        </div>
+
+        <div class="space-x-4">
+          <a
+            href="#"
+            class="hover:text-green-200"
+            onclick="showPage('articles')"
+            >Articles</a
+          >
+          <a
+            href="#"
+            class="hover:text-green-200"
+            onclick="showPage('complaint')"
+            >Raise Complaint</a
+          >
+          <a href="#" class="hover:text-green-200" onclick="showPage('contact')"
+            >Contact Us</a
+          >
+          <a
+            href="#"
+            class="hover:text-green-200"
+            id="authButton"
+            onclick="handleAuth()"
+            >Login</a
+          >
+        </div>
+      </div>
+    </nav>
+
+    <!-- Auth Page -->
+    <div id="authPage" class="container p-4 mx-auto mt-10 page">
+      <!-- Login Form -->
+      <div
+        class="max-w-md p-6 mx-auto bg-white rounded-lg shadow-md"
+        id="loginForm"
+      >
+        <h2 class="mb-4 text-2xl font-bold">Login</h2>
+        <form onsubmit="handleLogin(event)">
+          <input
+            type="email"
+            placeholder="Email"
+            id="loginEmail"
+            required
+            class="w-full p-2 mb-4 border rounded"
+          />
+          <input
+            type="password"
+            placeholder="Password"
+            id="loginPassword"
+            required
+            class="w-full p-2 mb-4 border rounded"
+          />
+          <button
+            type="submit"
+            class="w-full p-2 text-white bg-green-600 rounded hover:bg-green-700"
+          >
+            Login
+          </button>
+        </form>
+        <p class="mt-4 text-center">
+          Don't have an account?
+          <a href="#" onclick="toggleAuth()" class="text-green-600">Sign up</a>
+        </p>
+      </div>
+
+      <!-- Signup Form -->
+      <div
+        id="signupForm"
+        class="hidden max-w-md p-6 mx-auto bg-white rounded-lg shadow-md"
+      >
+        <h2 class="mb-4 text-2xl font-bold">Sign Up</h2>
+        <form onsubmit="handleSignup(event)">
+          <input
+            type="text"
+            placeholder="Full Name"
+            id="signupName"
+            required
+            class="w-full p-2 mb-4 border rounded"
+          />
+          <input
+            type="email"
+            placeholder="Email"
+            id="signupEmail"
+            required
+            class="w-full p-2 mb-4 border rounded"
+          />
+          <input
+            type="password"
+            placeholder="Password"
+            id="signupPassword"
+            required
+            class="w-full p-2 mb-4 border rounded"
+          />
+          <button
+            type="submit"
+            class="w-full p-2 text-white bg-green-600 rounded hover:bg-green-700"
+          >
+            Sign Up
+          </button>
+        </form>
+        <p class="mt-4 text-center">
+          Already have an account?
+          <a href="#" onclick="toggleAuth()" class="text-green-600">Login</a>
+        </p>
+      </div>
+    </div>
+
+    <!-- Articles Page -->
+    <div id="articlesPage" class="container hidden p-4 mx-auto mt-10 page">
+      <h2 class="mb-6 text-3xl font-bold">Environmental Articles</h2>
+      <div
+        class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3"
+        id="articlesList"
+      ></div>
+    </div>
+
+    <!-- Complaint Page -->
+    <div id="complaintPage" class="container hidden p-4 mx-auto mt-10 page">
+      <!-- Complaint Form -->
+      <div class="max-w-2xl p-6 mx-auto mb-6 bg-white rounded-lg shadow-md">
+        <h2 class="mb-4 text-2xl font-bold">Raise a Complaint</h2>
+        <form onsubmit="handleComplaint(event)">
+          <div class="mb-4">
+            <label class="block mb-2 text-gray-700">Subject</label>
+            <input
+              type="text"
+              id="complaintSubject"
+              required
+              class="w-full p-2 border rounded"
+            />
+          </div>
+          <div class="mb-4">
+            <label class="block mb-2 text-gray-700">Description</label>
+            <textarea
+              id="complaintDescription"
+              rows="4"
+              required
+              class="w-full p-2 border rounded"
+            ></textarea>
+          </div>
+          <!-- File Attachment Section -->
+          <div class="mb-4">
+            <label class="block mb-2 text-gray-700"
+              >Attach Image/Media (optional)</label
+            >
+            <input
+              type="file"
+              id="complaintMedia"
+              accept="image/*,video/*"
+              class="w-full p-2 border rounded"
+            />
+          </div>
+          <button
+            type="submit"
+            class="w-full p-2 text-white bg-green-600 rounded hover:bg-green-700"
+          >
+            Submit Complaint
+          </button>
+        </form>
+      </div>
+      <!-- Display Complaints -->
+      <div class="mt-8">
+        <h3 class="mb-4 text-2xl font-bold">Your Complaints</h3>
+        <div id="userComplaints"></div>
+      </div>
+    </div>
+
+    <!-- Contact Page -->
+    <div id="contactPage" class="container hidden p-4 mx-auto mt-10 page">
+      <div class="max-w-2xl p-6 mx-auto bg-white rounded-lg shadow-md">
+        <h2 class="mb-4 text-2xl font-bold">Contact Us</h2>
+        <form onsubmit="handleContact(event)">
+          <div class="mb-4">
+            <label class="block mb-2 text-gray-700">Name</label>
+            <input type="text" required class="w-full p-2 border rounded" />
+          </div>
+          <div class="mb-4">
+            <label class="block mb-2 text-gray-700">Email</label>
+            <input type="email" required class="w-full p-2 border rounded" />
+          </div>
+          <div class="mb-4">
+            <label class="block mb-2 text-gray-700">Message</label>
+            <textarea
+              rows="4"
+              required
+              class="w-full p-2 border rounded"
+            ></textarea>
+          </div>
+          <button
+            type="submit"
+            class="w-full p-2 text-white bg-green-600 rounded hover:bg-green-700"
+          >
+            Send Message
+          </button>
+        </form>
+      </div>
+    </div>
+
+    <script src="main.js" type="module"></script>
+  </body>
+</html>
